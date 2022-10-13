@@ -2,13 +2,13 @@ main:
   steps:
     - assignStep:
         assign:
-          - bucket: "<YOUR BUCKET>"
-          - projectid: "<YOUR PROJECT ID>"
-          - prefix: "<YOUR FILE PREFIX>"
-          - query: "<YOUR BIGQUERY QUERY>"
-          - instance: "<YOUR CLOUD SQL INSTANCE NAME>"
-          - databaseschema: "<YOUR CLOUD SQL DATABASE NAME>"
-          - importtable: "<YOUR CLOUD SQL TABLE NAME>"
+          - bucket: "bg-test-andy"
+          - projectid: "rd-project-billing-portal"
+          - prefix: "demo-"
+          - query: "SELECT sku.id id,sku.description description FROM `rd-project-billing-portal.gcp_billing_dev_use.gcp_billing_export_v1_snapshot_dev` LIMIT 1000"
+          - instance: "bg-test-andy"
+          - databaseschema: "bg-test-andy"
+          - importtable: "sku"
           - listResult:
               nextPageToken: ""
     - export-query:
@@ -33,7 +33,6 @@ main:
         switch:
           - condition:  ${"nextPageToken" in listResult}
             next: importfiles
-
 
 list_file_to_import:
   params:
@@ -67,7 +66,6 @@ list_file_to_import:
                   file: ${"gs://" + bucket + "/" + file.name}
     - return-step:
         return: ${listResult}
-
 
 import_file:
   params:
